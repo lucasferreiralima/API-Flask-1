@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-user}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-password}
+      - POSTGRES_DB=${POSTGRES_DB:-apiflask_db}
+    ports:
+      - "5432:5432"
+
+  web:
+    build: .
+    command: gunicorn --bind 0.0.0.0:5000 wsgi:app
+    volumes:
+      - .:/code
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_APP=wsgi.py
+      - FLASK_DEBUG=1
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-user}:${POSTGRES_PASSWORD:-password}@db:5432/${POSTGRES_DB:-apiflask_db}
+      - SECRET_KEY=${SECRET_KEY:-dev-key}
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
