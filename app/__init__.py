@@ -19,4 +19,7 @@ def create_app(config_name=None):
     from app.api import api as api_blueprint
     app.register_blueprint(api_blueprint, url_prefix='/api')
 
+    from app.web import web as web_blueprint
+    app.register_blueprint(web_blueprint)
+
     return app

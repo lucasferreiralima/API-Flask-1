@@ -28,3 +28,8 @@ def health_check():
 @api.route('/ping', methods=['GET'])
 def ping():
     return jsonify({"message": "pong"}), 200
+
+@api.route('/teste', methods=['GET'])
+def Teste():
+    return("<p>Teste deu certo<p/>")
+
