@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block title %}Nova Operação - VettoreFlow{% endblock %}
+
+{% block content %}
+    <div class="form-container">
+        <h1>Cadastrar Nova Operação</h1>
+        <p>Preencha os dados abaixo para registrar uma nova operação comercial.</p>
+
+        <div class="card">
+            <form action="{{ url_for('web.nova_operacao') }}" method="POST" class="vettore-form">
+                <div class="form-section">
+                    <h3>Dados do Cliente</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="cliente_nome">Nome do Cliente / Empresa</label>
+                            <input type="text" id="cliente_nome" name="cliente_nome" required placeholder="Ex: João da Silva">
+                        </div>
+                        <div class="form-group">
+                            <label for="cpf_cnpj">CPF ou CNPJ</label>
+                            <input type="text" id="cpf_cnpj" name="cpf_cnpj" required placeholder="Ex: 000.000.000-00">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="cidade">Cidade</label>
+                            <input type="text" id="cidade" name="cidade" placeholder="Ex: São Paulo">
+                        </div>
+                        <div class="form-group">
+                            <label for="uf">UF</label>
+                            <input type="text" id="uf" name="uf" maxlength="2" placeholder="Ex: SP">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Dados da Operação</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="produto">Produto</label>
+                            <select id="produto" name="produto" required>
+                                <option value="Abertura de Conta PJ">Abertura de Conta PJ</option>
+                                <option value="Abertura de Conta PF">Abertura de Conta PF</option>
+                                <option value="Cartão">Cartão</option>
+                                <option value="Getnet">Getnet</option>
+                                <option value="Crédito">Crédito</option>
+                                <option value="Maquininha">Maquininha</option>
+                                <option value="Produto Bancário">Produto Bancário</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="status">Status Inicial</label>
+                            <select id="status" name="status" required>
+                                <option value="Novo">Novo</option>
+                                <option value="Em análise">Em análise</option>
+                                <option value="Pendente documentação">Pendente documentação</option>
+                                <option value="Aprovado">Aprovado</option>
+                                <option value="Conta aberta">Conta aberta</option>
+                                <option value="Reprovado">Reprovado</option>
+                                <option value="Cancelado">Cancelado</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="responsavel">Responsável</label>
+                            <input type="text" id="responsavel" name="responsavel" placeholder="Nome do consultor">
+                        </div>
+                        <div class="form-group">
+                            <label for="equipe">Equipe</label>
+                            <input type="text" id="equipe" name="equipe" placeholder="Nome da equipe">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="valor_estimado">Valor Estimado (R$)</label>
+                            <input type="number" id="valor_estimado" name="valor_estimado" step="0.01" value="0.00">
+                        </div>
+                        <div class="form-group">
+                            <label for="canal_origem">Canal de Origem</label>
+                            <input type="text" id="canal_origem" name="canal_origem" placeholder="Ex: Indicação, Google, etc.">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Inconsistências (Se houver)</h3>
+                    <div class="form-group checkbox-group">
+                        <input type="checkbox" id="possui_inconsistencia" name="possui_inconsistencia">
+                        <label for="possui_inconsistencia">Marcar como inconsistente</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="descricao_inconsistencia">Descrição da Inconsistência</label>
+                        <textarea id="descricao_inconsistencia" name="descricao_inconsistencia" rows="3" placeholder="Descreva o problema encontrado..."></textarea>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Salvar Operação</button>
+                    <a href="{{ url_for('web.index') }}" class="btn btn-secondary">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

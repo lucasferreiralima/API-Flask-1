@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import render_template, request, redirect, url_for, flash
 from app.web import web
 from app.services.operacao_service import OperacaoService
 
@@ -16,3 +16,10 @@ def listar_operacoes():
 def listar_pendencias():
     pendencias = OperacaoService.listar_pendencias()
     return render_template('pendencias.html', pendencias=pendencias)
+
+@web.route('/operacoes/nova', methods=['GET', 'POST'])
+def nova_operacao():
+    if request.method == 'POST':
+        OperacaoService.criar_operacao(request.form)
+        return redirect(url_for('web.listar_operacoes'))
+    return render_template('form_operacao.html')

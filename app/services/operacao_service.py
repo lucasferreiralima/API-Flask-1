@@ -72,3 +72,24 @@ class OperacaoService:
             "por_responsavel": OperacaoService.produtividade_por_responsavel(),
             "por_equipe": OperacaoService.produtividade_por_equipe()
         }
+
+    @staticmethod
+    def criar_operacao(dados):
+        nova_op = Operacao(
+            cliente_nome=dados.get('cliente_nome'),
+            cpf_cnpj=dados.get('cpf_cnpj'),
+            produto=dados.get('produto'),
+            status=dados.get('status'),
+            canal_origem=dados.get('canal_origem'),
+            responsavel=dados.get('responsavel'),
+            equipe=dados.get('equipe'),
+            cidade=dados.get('cidade'),
+            uf=dados.get('uf'),
+            valor_estimado=float(dados.get('valor_estimado', 0) or 0),
+            observacao=dados.get('observacao'),
+            possui_inconsistencia=True if dados.get('possui_inconsistencia') else False,
+            descricao_inconsistencia=dados.get('descricao_inconsistencia')
+        )
+        db.session.add(nova_op)
+        db.session.commit()
+        return nova_op
