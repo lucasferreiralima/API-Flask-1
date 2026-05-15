@@ -1,35 +1,43 @@
-from flask import jsonify, current_app
+from flask import jsonify
 from app.api import api
-from app.extensions import db
-from sqlalchemy import text
+from app.services.operacao_service import OperacaoService
 
 @api.route('/health', methods=['GET'])
 def health_check():
-    """
-    Check the health of the API and database connection.
-    """
-    health_status = {
-        "status": "up",
-        "api": "ok",
-        "database": "unknown"
-    }
-    
-    try:
-        # Check database connection
-        db.session.execute(text('SELECT 1'))
-        health_status["database"] = "ok"
-    except Exception as e:
-        current_app.logger.error(f"Database health check failed: {str(e)}")
-        health_status["database"] = "down"
-        health_status["status"] = "degraded"
-        
-    return jsonify(health_status), 200 if health_status["status"] == "up" else 503
+    return jsonify({"status": "up", "api": "ok"}), 200
 
-@api.route('/ping', methods=['GET'])
-def ping():
-    return jsonify({"message": "pong"}), 200
+@api.route('/operacoes', methods=['GET'])
+def get_operacoes():
+    operacoes = OperacaoService.listar_todas()
+    return jsonify([
+        {
+            "id": o.id,
+            "cliente": o.cliente_nome,
+            "produto": o.produto,
+            "status": o.status,
+            "responsavel": o.responsavel
+        } for o in operacoes
+    ]), 200
 
-@api.route('/teste', methods=['GET'])
-def Teste():
-    return("<p>Teste deu certo<p/>")
+@api.route('/pendencias', methods=['GET'])
+def get_pendencias():
+    pendencias = OperacaoService.listar_pendencias()
+    return jsonify([
+        {
+            "id": p.id,
+            "cliente": p.cliente_nome,
+            "produto": p.produto,
+            "status": p.status,
+            "inconsistencia": p.descricao_inconsistencia
+        } for p in pendencias
+    ]), 200
 
+@api.route('/dashboard/resumo', methods=['GET'])
+def get_dashboard_resumo():
+    resumo = OperacaoService.preparar_resumo_dashboard()
+    return jsonify(resumo), 200
+
+@api.route('/indicadores', methods=['GET'])
+def get_indicadores():
+    indicadores = OperacaoService.calcular_indicadores()
+    return jsonify(indicadores), 200

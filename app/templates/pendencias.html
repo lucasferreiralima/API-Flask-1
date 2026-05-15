@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Pendências - VettoreFlow{% endblock %}
+
+{% block content %}
+    <h1>Pendências e Inconsistências</h1>
+    <p>Registros que exigem atenção imediata da equipe.</p>
+
+    <div class="card">
+        {% if pendencias %}
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Cliente</th>
+                    <th>Produto</th>
+                    <th>Status</th>
+                    <th>Responsável</th>
+                    <th>Motivo / Descrição</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in pendencias %}
+                <tr>
+                    <td>{{ p.id }}</td>
+                    <td>{{ p.cliente_nome }}</td>
+                    <td>{{ p.produto }}</td>
+                    <td><span class="status-badge {{ p.status.lower().replace(' ', '-') }}">{{ p.status }}</span></td>
+                    <td>{{ p.responsavel }}</td>
+                    <td class="danger-text">
+                        {% if p.status == 'Pendente documentação' %}
+                            [Status: Pendente]
+                        {% endif %}
+                        {% if p.possui_inconsistencia %}
+                            {{ p.descricao_inconsistencia }}
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty-state success-state">
+            <p>Excelente! Não há pendências registradas.</p>
+        </div>
+        {% endif %}
+    </div>
+{% endblock %}

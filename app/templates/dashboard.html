@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - VettoreFlow{% endblock %}
+
+{% block content %}
+    <div class="dashboard-header">
+        <h1>Dashboard Operacional</h1>
+        <p>Acompanhamento em tempo real das operações comerciais.</p>
+    </div>
+
+    <div class="metrics-grid">
+        <div class="card metric">
+            <h3>Total de Operações</h3>
+            <p class="value">{{ resumo.indicadores.total }}</p>
+        </div>
+        <div class="card metric">
+            <h3>Convertidas</h3>
+            <p class="value">{{ resumo.indicadores.convertidas }}</p>
+        </div>
+        <div class="card metric">
+            <h3>Pendências</h3>
+            <p class="value danger">{{ resumo.indicadores.pendentes }}</p>
+        </div>
+        <div class="card metric">
+            <h3>Em Análise</h3>
+            <p class="value warning">{{ resumo.indicadores.em_analise }}</p>
+        </div>
+        <div class="card metric">
+            <h3>Inconsistências</h3>
+            <p class="value danger">{{ resumo.indicadores.inconsistencias }}</p>
+        </div>
+        <div class="card metric">
+            <h3>Taxa de Conversão</h3>
+            <p class="value success">{{ resumo.indicadores.taxa_conversao }}%</p>
+        </div>
+    </div>
+
+    <div class="charts-grid">
+        <div class="card">
+            <h3>Operações por Status</h3>
+            <table class="data-table-mini">
+                {% for status, count in resumo.por_status.items() %}
+                <tr>
+                    <td>{{ status }}</td>
+                    <td><strong>{{ count }}</strong></td>
+                </tr>
+                {% else %}
+                <tr><td colspan="2">Nenhum dado disponível</td></tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="card">
+            <h3>Operações por Produto</h3>
+            <table class="data-table-mini">
+                {% for produto, count in resumo.por_produto.items() %}
+                <tr>
+                    <td>{{ produto }}</td>
+                    <td><strong>{{ count }}</strong></td>
+                </tr>
+                {% else %}
+                <tr><td colspan="2">Nenhum dado disponível</td></tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="card">
+            <h3>Top Responsáveis</h3>
+            <table class="data-table-mini">
+                {% for resp, count in resumo.por_responsavel.items() %}
+                <tr>
+                    <td>{{ resp }}</td>
+                    <td><strong>{{ count }}</strong></td>
+                </tr>
+                {% else %}
+                <tr><td colspan="2">Nenhum dado disponível</td></tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock %}
