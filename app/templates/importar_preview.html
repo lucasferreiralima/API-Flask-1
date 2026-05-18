@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block title %}Prévia da Importação - VettoreFlow{% endblock %}
+
+{% block content %}
+    <h1>Prévia da Importação</h1>
+    <p>Revise os registros encontrados na planilha antes de confirmar a gravação definitiva.</p>
+
+    <div class="metrics-grid">
+        <div class="card metric">
+            <h3>Novos Registros</h3>
+            <p class="value success">{{ resumo.novos|length }}</p>
+        </div>
+        <div class="card metric">
+            <h3>Duplicados (Ignorados)</h3>
+            <p class="value">{{ resumo.duplicados|length }}</p>
+        </div>
+        <div class="card metric">
+            <h3>Erros (Ignorados)</h3>
+            <p class="value danger">{{ resumo.erros|length }}</p>
+        </div>
+    </div>
+
+    <div class="import-actions card">
+        {% if resumo.novos %}
+            <h3>Deseja confirmar a importação dos {{ resumo.novos|length }} novos registros?</h3>
+            <div class="form-actions">
+                <a href="{{ url_for('web.confirmar_importacao', token=resumo.token) }}" class="btn btn-primary">Confirmar e Salvar</a>
+                <a href="{{ url_for('web.cancelar_importacao', token=resumo.token) }}" class="btn btn-secondary">Cancelar e Descartar</a>
+            </div>
+        {% else %}
+            <h3>Nenhum novo registro válido para importar.</h3>
+            <div class="form-actions">
+                <a href="{{ url_for('web.cancelar_importacao', token=resumo.token) }}" class="btn btn-secondary">Voltar para Importação</a>
+            </div>
+        {% endif %}
+    </div>
+
+    {% if resumo.erros %}
+    <div class="card">
+        <h3 class="danger-text">Registros com Erro (Identificados na Limpeza de Dados)</h3>
+        <p class="info-text">Estes registros foram ignorados automaticamente por inconsistências críticas.</p>
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Cliente esperado</th>
+                        <th>Motivo do Erro / Inconsistência</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for erro in resumo.erros %}
+                    <tr>
+                        <td>{{ erro.cliente_nome or '[Nome Ausente]' }}</td>
+                        <td class="danger-text"><strong>{{ erro.motivo_erro }}</strong></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if resumo.novos %}
+    <div class="card">
+        <h3>Novos Registros Válidos</h3>
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Cliente</th>
+                        <th>Produto</th>
+                        <th>Status</th>
+                        <th>Responsável</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for novo in resumo.novos %}
+                    <tr>
+                        <td>{{ novo.cliente_nome }}</td>
+                        <td>{{ novo.produto }}</td>
+                        <td>{{ novo.status }}</td>
+                        <td>{{ novo.responsavel }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if resumo.duplicados %}
+    <div class="card">
+        <h3>Registros Duplicados (Ignorados por segurança)</h3>
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Cliente</th>
+                        <th>Produto</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for dup in resumo.duplicados %}
+                    <tr>
+                        <td>{{ dup.cliente_nome }}</td>
+                        <td>{{ dup.produto }}</td>
+                        <td>{{ dup.status }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+{% endblock %}

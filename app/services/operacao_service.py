@@ -93,3 +93,29 @@ class OperacaoService:
         db.session.add(nova_op)
         db.session.commit()
         return nova_op
+
+    @staticmethod
+    def atualizar_operacao(operacao_id, dados):
+        operacao = Operacao.query.get(operacao_id)
+        if not operacao:
+            return None
+        
+        operacao.cliente_nome = dados.get('cliente_nome', operacao.cliente_nome)
+        operacao.cpf_cnpj = dados.get('cpf_cnpj', operacao.cpf_cnpj)
+        operacao.produto = dados.get('produto', operacao.produto)
+        operacao.status = dados.get('status', operacao.status)
+        operacao.canal_origem = dados.get('canal_origem', operacao.canal_origem)
+        operacao.responsavel = dados.get('responsavel', operacao.responsavel)
+        operacao.equipe = dados.get('equipe', operacao.equipe)
+        operacao.cidade = dados.get('cidade', operacao.cidade)
+        operacao.uf = dados.get('uf', operacao.uf)
+        
+        if 'valor_estimado' in dados:
+            operacao.valor_estimado = float(dados.get('valor_estimado', 0) or 0)
+            
+        operacao.observacao = dados.get('observacao', operacao.observacao)
+        operacao.possui_inconsistencia = True if dados.get('possui_inconsistencia') else False
+        operacao.descricao_inconsistencia = dados.get('descricao_inconsistencia', operacao.descricao_inconsistencia)
+        
+        db.session.commit()
+        return operacao

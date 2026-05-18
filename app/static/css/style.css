@@ -256,6 +256,28 @@ footer {
     margin-top: 20px;
 }
 
+/* Scrollable Tables */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    max-height: 400px;
+    overflow-y: auto;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.table-responsive .data-table {
+    margin-top: 0;
+}
+
+.table-responsive thead th {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: #f8f9fa;
+}
+
 /* Sorting Headers */
 .sortable {
     cursor: pointer;
@@ -272,3 +294,76 @@ footer {
 
 .sort-asc:after { content: '↑'; color: var(--primary); }
 .sort-desc:after { content: '↓'; color: var(--primary); }
+
+.btn-edit {
+    background-color: var(--primary);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.btn-edit:hover {
+    background-color: var(--secondary);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column;
+        align-items: center;
+        padding: 10px;
+    }
+
+    nav .links {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 15px;
+    }
+
+    nav .links a {
+        margin: 0;
+        font-size: 0.8rem;
+    }
+
+    .metrics-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .metric .value {
+        font-size: 1.5rem;
+    }
+
+    .form-row {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    main {
+        padding: 15px 10px;
+    }
+
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .btn-nav {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .metrics-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    nav .brand {
+        font-size: 1.2rem;
+    }
+}

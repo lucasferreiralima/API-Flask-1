@@ -7,34 +7,40 @@
     
     <div class="card">
         {% if operacoes %}
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th class="sortable">ID</th>
-                    <th class="sortable">Data</th>
-                    <th class="sortable">Cliente</th>
-                    <th class="sortable">Produto</th>
-                    <th class="sortable">Status</th>
-                    <th class="sortable">Responsável</th>
-                    <th class="sortable">Equipe</th>
-                    <th>Inconsistente?</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for op in operacoes %}
-                <tr>
-                    <td>{{ op.id }}</td>
-                    <td>{{ op.data_atendimento.strftime('%d/%m/%Y') }}</td>
-                    <td>{{ op.cliente_nome }}</td>
-                    <td>{{ op.produto }}</td>
-                    <td><span class="status-badge {{ op.status.lower().replace(' ', '-') }}">{{ op.status }}</span></td>
-                    <td>{{ op.responsavel }}</td>
-                    <td>{{ op.equipe }}</td>
-                    <td>{{ "Sim" if op.possui_inconsistencia else "Não" }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th class="sortable">ID</th>
+                        <th class="sortable">Data</th>
+                        <th class="sortable">Cliente</th>
+                        <th class="sortable">Produto</th>
+                        <th class="sortable">Status</th>
+                        <th class="sortable">Responsável</th>
+                        <th class="sortable">Equipe</th>
+                        <th>Inconsistente?</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for op in operacoes %}
+                    <tr>
+                        <td>{{ op.id }}</td>
+                        <td>{{ op.data_atendimento.strftime('%d/%m/%Y') }}</td>
+                        <td>{{ op.cliente_nome }}</td>
+                        <td>{{ op.produto }}</td>
+                        <td><span class="status-badge {{ op.status.lower().replace(' ', '-') }}">{{ op.status }}</span></td>
+                        <td>{{ op.responsavel }}</td>
+                        <td>{{ op.equipe }}</td>
+                        <td>{{ "Sim" if op.possui_inconsistencia else "Não" }}</td>
+                        <td>
+                            <a href="{{ url_for('web.editar_operacao', id=op.id) }}" class="btn-edit">Editar</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
         {% else %}
         <div class="empty-state">
             <p>Nenhuma operação cadastrada no momento.</p>

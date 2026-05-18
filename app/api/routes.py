@@ -41,3 +41,15 @@ def get_dashboard_resumo():
 def get_indicadores():
     indicadores = OperacaoService.calcular_indicadores()
     return jsonify(indicadores), 200
+
+@api.route('/operacoes/<int:id>', methods=['PUT'])
+def update_operacao(id):
+    dados = request.get_json()
+    operacao = OperacaoService.atualizar_operacao(id, dados)
+    if not operacao:
+        return jsonify({"error": "Operação não encontrada"}), 404
+    return jsonify({
+        "id": operacao.id,
+        "status": operacao.status,
+        "message": "Operação atualizada com sucesso"
+    }), 200

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Importar Planilha - VettoreFlow{% endblock %}
+
+{% block content %}
+    <div class="form-container">
+        <h1>Importação de Operações</h1>
+        <p>Selecione um arquivo Excel (.xlsx, .xls, .xlsm) para importar novos dados para o sistema.</p>
+
+        <div class="card">
+            <form action="{{ url_for('web.importar') }}" method="POST" enctype="multipart/form-data" class="import-form">
+                <div class="form-group">
+                    <label for="file">Arquivo de Planilha</label>
+                    <input type="file" id="file" name="file" accept=".xlsx, .xls, .xlsm" required>
+                </div>
+                <div class="form-actions" style="flex-wrap: wrap;">
+                    <button type="submit" class="btn btn-primary">Processar Arquivo</button>
+                    <a href="{{ url_for('web.baixar_exemplo') }}" class="btn btn-secondary">Planilha de Teste (OK)</a>
+                    <a href="{{ url_for('web.baixar_exemplo_erros') }}" class="btn btn-secondary" style="background: var(--warning);">Planilha de Teste (Com Erros)</a>
+                    <a href="{{ url_for('web.index') }}" class="btn btn-secondary">Voltar</a>
+                </div>
+            </form>
+        </div>
+
+        <div class="card info-card">
+            <h3>Instruções de Formatação</h3>
+            <p>Sua planilha deve conter as seguintes colunas (os nomes podem variar levemente):</p>
+            <ul>
+                <li><strong>Cliente:</strong> Nome completo ou Razão Social.</li>
+                <li><strong>Produto:</strong> Deve ser um dos produtos cadastrados (ex: Abertura de Conta PJ).</li>
+                <li><strong>Status:</strong> Deve ser um dos status válidos (ex: Novo, Em análise).</li>
+                <li><strong>Data:</strong> Data do atendimento.</li>
+                <li><strong>CPF/CNPJ:</strong> Documento do cliente.</li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}

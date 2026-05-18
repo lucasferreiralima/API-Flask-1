@@ -8,37 +8,43 @@
 
     <div class="card">
         {% if pendencias %}
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th class="sortable">ID</th>
-                    <th class="sortable">Cliente</th>
-                    <th class="sortable">Produto</th>
-                    <th class="sortable">Status</th>
-                    <th class="sortable">Responsável</th>
-                    <th>Motivo / Descrição</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for p in pendencias %}
-                <tr>
-                    <td>{{ p.id }}</td>
-                    <td>{{ p.cliente_nome }}</td>
-                    <td>{{ p.produto }}</td>
-                    <td><span class="status-badge {{ p.status.lower().replace(' ', '-') }}">{{ p.status }}</span></td>
-                    <td>{{ p.responsavel }}</td>
-                    <td class="danger-text">
-                        {% if p.status == 'Pendente documentação' %}
-                            [Status: Pendente]
-                        {% endif %}
-                        {% if p.possui_inconsistencia %}
-                            {{ p.descricao_inconsistencia }}
-                        {% endif %}
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th class="sortable">ID</th>
+                        <th class="sortable">Cliente</th>
+                        <th class="sortable">Produto</th>
+                        <th class="sortable">Status</th>
+                        <th class="sortable">Responsável</th>
+                        <th>Motivo / Descrição</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in pendencias %}
+                    <tr>
+                        <td>{{ p.id }}</td>
+                        <td>{{ p.cliente_nome }}</td>
+                        <td>{{ p.produto }}</td>
+                        <td><span class="status-badge {{ p.status.lower().replace(' ', '-') }}">{{ p.status }}</span></td>
+                        <td>{{ p.responsavel }}</td>
+                        <td class="danger-text">
+                            {% if p.status == 'Pendente documentação' %}
+                                [Status: Pendente]
+                            {% endif %}
+                            {% if p.possui_inconsistencia %}
+                                {{ p.descricao_inconsistencia }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{{ url_for('web.editar_operacao', id=p.id) }}" class="btn-edit">Editar</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
         {% else %}
         <div class="empty-state success-state">
             <p>Excelente! Não há pendências registradas.</p>
