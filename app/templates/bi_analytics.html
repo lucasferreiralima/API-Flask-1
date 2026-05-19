@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}BI & Analytics - VettoreFlow{% endblock %}
+
+{% block content %}
+    <div class="bi-header">
+        <h1>Showcase de Inteligência de Dados</h1>
+        <p>Demonstração de competências em Power BI, Modelagem de Dados e Dashboards Avançados.</p>
+    </div>
+
+    <!-- Seção de Contexto -->
+    <div class="card info-card" style="border-left: 5px solid var(--success);">
+        <h3>Estratégia Analítica</h3>
+        <p>Além da gestão transacional (Flask/Postgres), domino a camada de visualização para suporte à decisão. Meus projetos de BI focam em <strong>Storytelling com dados</strong>, transformando números em ações estratégicas.</p>
+    </div>
+
+    <!-- Galeria de Dashboards -->
+    <div class="bi-gallery">
+        
+        <!-- Projeto 1: VettoreFlow -->
+        <!--<div class="card bi-item">
+            <div class="bi-preview"> -->
+                <!-- Coloque sua imagem: app/static/img/vettore_bi.png -->
+                <!--<img src="{{ url_for('static', filename='img/vettore_bi.png') }}" alt="Dashboard VettoreFlow" onerror="this.src='https://placehold.co/600x400?text=Dashboard+VettoreFlow'">
+            </div>
+            <div class="bi-details">
+                <span class="status-badge aprovado">Comercial & Operações</span>
+                <h3>Dashboard Estratégico VettoreFlow</h3>
+                <p>Análise avançada desenvolvida sobre os dados transacionais desta aplicação. O painel consolida o funil de conversão bancária, produtividade por equipe e previsibilidade de faturamento baseada no valor estimado das operações.</p>
+                <ul>
+                    <li>Modelagem Star Schema</li>
+                    <li>Medidas DAX de Conversão (%)</li>
+                    <li>Integração de dados Excel/PostgreSQL</li>
+                </ul>
+            </div>
+        </div> -->
+
+        <!-- Projeto 2: TCERJ - Parte 1 -->
+        <div class="card bi-item">
+            <div class="bi-preview">
+                <!-- Coloque sua imagem: app/static/img/tcerj_bi_1.png -->
+                <img src="{{ url_for('static', filename='img/tcerj_bi_1.png') }}" alt="Estudo de Equidade TCERJ - Demográfico" onerror="this.src='https://placehold.co/600x400?text=TCERJ+Estudo+Demografico'">
+            </div>
+            <div class="bi-details">
+                <span class="status-badge novo">Institucional & Social</span>
+                <h3>Estudo de Equidade e Censo (TCERJ)</h3>
+                <p>Projeto de alto impacto desenvolvido para o Tribunal de Contas do Estado do Rio de Janeiro. Consiste em um diagnóstico demográfico completo do corpo funcional, analisando métricas de idade, cor, gênero e tempo de serviço.</p>
+                <ul>
+                    <li>Análise de Diversidade e Inclusão</li>
+                    <li>Distribuição por Escolaridade</li>
+                    <li>Storytelling Governamental</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Projeto 2: TCERJ - Parte 2 (Segunda Imagem) -->
+        <div class="card bi-item">
+            <div class="bi-preview">
+                <!-- Coloque sua imagem: app/static/img/tcerj_bi_2.png -->
+                <img src="{{ url_for('static', filename='img/tcerj_bi_2.png') }}" alt="Estudo de Equidade TCERJ - Liderança" onerror="this.src='https://placehold.co/600x400?text=TCERJ+Cargos+de+Lideranca'">
+            </div>
+            <div class="bi-details">
+                <span class="status-badge warning">Cargos & Carreira</span>
+                <h3>Liderança e Representatividade (TCERJ)</h3>
+                <p>Segunda camada do estudo focada em cargos de liderança e tomada de decisão. O painel evidencia a representatividade nos diferentes níveis hierárquicos do Tribunal, permitindo uma visão clara da evolução das carreiras.</p>
+                <ul>
+                    <li>Métricas de Progressão de Carreira</li>
+                    <li>Análise de Gap de Gênero/Raça</li>
+                    <li>Filtros Dinâmicos por Departamento</li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+    <style>
+        .bi-header { text-align: center; margin-bottom: 40px; }
+        .bi-gallery { display: grid; grid-template-columns: 1fr; gap: 30px; }
+        .bi-item { display: flex; gap: 25px; padding: 0; overflow: hidden; align-items: stretch; }
+        .bi-preview { flex: 1.5; background: #eee; min-height: 250px; display: flex; align-items: center; justify-content: center; border-right: 1px solid #eee; }
+        .bi-preview img { width: 100%; height: 100%; object-fit: cover; }
+        .bi-details { flex: 1; padding: 30px; }
+        .bi-details h3 { margin: 15px 0 10px 0; }
+        .bi-details ul { margin-top: 15px; padding-left: 20px; color: var(--secondary); font-size: 0.9rem; }
+        
+        @media (max-width: 768px) {
+            .bi-item { flex-direction: column; }
+            .bi-preview { min-height: 200px; border-right: none; border-bottom: 1px solid #eee; }
+        }
+    </style>
+{% endblock %}

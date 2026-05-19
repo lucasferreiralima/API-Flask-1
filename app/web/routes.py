@@ -102,3 +102,7 @@ def baixar_exemplo_erros():
         as_attachment=True,
         download_name='exemplo_com_erros_vettoreflow.xlsx'
     )
+
+@web.route('/bi-analytics')
+def bi_analytics():
+    return render_template('bi_analytics.html')
