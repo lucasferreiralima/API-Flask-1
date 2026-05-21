@@ -1,0 +1,51 @@
+{% extends "setelan/base.html" %}
+
+{% block title %}Estoque e Reposição - SeteLan Insight{% endblock %}
+
+{% block content %}
+    <h1>Gestão de Estoque e Disponibilidade</h1>
+    <p>Produtos com estoque crítico ou necessidade imediata de reposição.</p>
+
+    <div class="metrics-grid">
+        <div class="card metric">
+            <h3>Ruptura de Estoque</h3>
+            <p class="value danger">{{ estoques|length }}</p>
+            <p style="font-size: 0.8rem;">PRODUTOS EM ESTADO CRÍTICO</p>
+        </div>
+    </div>
+
+    <div class="card">
+        {% if estoques %}
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Loja</th>
+                        <th>Produto</th>
+                        <th style="text-align: center;">Atual</th>
+                        <th style="text-align: center;">Mínimo</th>
+                        <th>Status</th>
+                        <th>Sugestão</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for est in estoques %}
+                    <tr>
+                        <td>{{ est.loja.nome_loja }}</td>
+                        <td><strong>{{ est.produto.nome_produto }}</strong></td>
+                        <td style="text-align: center;" class="danger-text">{{ est.estoque_atual }}</td>
+                        <td style="text-align: center;">{{ est.estoque_minimo }}</td>
+                        <td><span class="status-badge reprovado">Crítico</span></td>
+                        <td><strong class="success">Repor {{ est.estoque_ideal - est.estoque_atual }} un.</strong></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="empty-state success-state">
+            <p>Estoque saudável em todas as unidades!</p>
+        </div>
+        {% endif %}
+    </div>
+{% endblock %}

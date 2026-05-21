@@ -1,0 +1,75 @@
+{% extends "setelan/base.html" %}
+
+{% block content %}
+    <div style="margin-bottom: 32px;">
+        <h1>Data Engine & Exportação</h1>
+        <p class="subtitle">Documentação técnica do motor de dados e ferramenta de extração de base consolidada.</p>
+    </div>
+
+    <!-- Seção de Download -->
+    <div class="card" style="border-left: 5px solid var(--success); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+        <div>
+            <h3 style="margin: 0 0 8px 0;">Exportar Base Consolidada</h3>
+            <p style="margin: 0; color: var(--text-secondary); font-size: 0.9rem;">Baixe o arquivo Excel (.xlsx) contendo todas as dimensões e fatos tratados pelo sistema.</p>
+        </div>
+        <a href="{{ url_for('setelan.baixar_base') }}" class="nav-link active" style="width: auto; padding: 12px 24px;">
+            &darr; Download Excel (Base Completa)
+        </a>
+    </div>
+
+    <!-- Documentação do Algoritmo -->
+    <div class="card">
+        <h3 style="margin-bottom: 24px;">Arquitetura do Motor de Dados (ETL)</h3>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+            <div>
+                <h4 style="color: var(--tim-blue); margin-bottom: 12px;">1. Extração (Extract)</h4>
+                <p style="font-size: 0.9rem; line-height: 1.6;">O sistema utiliza a biblioteca <strong>Pandas</strong> para realizar a leitura de múltiplas abas de arquivos Excel. O motor é capaz de processar arquivos <code>.xlsx</code>, <code>.xls</code> e <code>.xlsm</code> de forma agnóstica a nomes de colunas, utilizando um mapeamento de alias (ex: "Faturamento" ou "Valor Líquido" são normalizados para o mesmo campo).</p>
+            </div>
+            
+            <div>
+                <h4 style="color: var(--tim-blue); margin-bottom: 12px;">2. Tratamento (Transform)</h4>
+                <p style="font-size: 0.9rem; line-height: 1.6;">Durante o processamento, aplicamos regras de <strong>Data Cleaning</strong>:</p>
+                <ul style="font-size: 0.85rem; padding-left: 20px; color: var(--text-secondary);">
+                    <li>Conversão de tipos (Decimal para Float para precisão matemática).</li>
+                    <li>Normalização de strings (Remoção de espaços e acentos em status).</li>
+                    <li>Tratamento de valores nulos (Fillna) para evitar quebras em cálculos de margem.</li>
+                    <li>Cálculo dinâmico de indicadores (Ticket Médio e Atingimento de Meta).</li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 style="color: var(--tim-blue); margin-bottom: 12px;">3. Carga (Load)</h4>
+                <p style="font-size: 0.9rem; line-height: 1.6;">Os dados tratados são persistidos em um banco <strong>PostgreSQL</strong> (ou SQLite em ambiente dev) através do SQLAlchemy. O processo garante integridade referencial, ligando automaticamente vendas aos seus respectivos vendedores, lojas e produtos através de chaves estrangeiras.</p>
+            </div>
+        </div>
+
+        <div style="margin-top: 40px; padding: 20px; background: #f8fafc; border-radius: 12px; border: 1px solid var(--border-color);">
+            <h4 style="margin-bottom: 15px;">Stack Tecnológica da Solução:</h4>
+            <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                <span class="badge" style="background: #e2e8f0;">Python 3.11</span>
+                <span class="badge" style="background: #e2e8f0;">Pandas (Dataframes)</span>
+                <span class="badge" style="background: #e2e8f0;">OpenPyXL (Excel Engine)</span>
+                <span class="badge" style="background: #e2e8f0;">SQLAlchemy (ORM)</span>
+                <span class="badge" style="background: #e2e8f0;">Gunicorn (WSGI)</span>
+                <span class="badge" style="background: #e2e8f0;">Docker (Containerization)</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Benefícios para o Negócio -->
+    <div class="kpi-grid">
+        <div class="card">
+            <h4 style="margin-bottom: 12px;">Confiabilidade</h4>
+            <p style="font-size: 0.85rem; color: var(--text-secondary);">Automação que elimina o erro humano comum em consolidações manuais de Excel.</p>
+        </div>
+        <div class="card">
+            <h4 style="margin-bottom: 12px;">Escalabilidade</h4>
+            <p style="font-size: 0.85rem; color: var(--text-secondary);">O motor está preparado para processar arquivos com dezenas de milhares de linhas sem perda de performance.</p>
+        </div>
+        <div class="card">
+            <h4 style="margin-bottom: 12px;">Visibilidade</h4>
+            <p style="font-size: 0.85rem; color: var(--text-secondary);">Transformação instantânea de dados "frios" de planilhas em KPIs acionáveis.</p>
+        </div>
+    </div>
+{% endblock %}

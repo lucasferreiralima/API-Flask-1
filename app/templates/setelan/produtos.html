@@ -1,0 +1,55 @@
+{% extends "setelan/base.html" %}
+
+{% block content %}
+    <div style="margin-bottom: 30px;">
+        <h1>Mix de Vendas e Performance de Produtos</h1>
+        <p>Análise detalhada do desempenho por categoria e margem de contribuição.</p>
+    </div>
+
+    <div class="card">
+        <h3>Ranking de Categorias por Faturamento</h3>
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Categoria</th>
+                        <th style="text-align: center;">Qtd Vendas</th>
+                        <th style="text-align: right;">Faturamento Bruto</th>
+                        <th style="text-align: right;">Margem Média</th>
+                        <th>Status Mix</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cat, qtd, faturamento, margem in mix %}
+                    <tr>
+                        <td><strong>{{ cat }}</strong></td>
+                        <td style="text-align: center;">{{ qtd }}</td>
+                        <td style="text-align: right;">R$ {{ "{:,.2f}".format(faturamento).replace(',', '.') }}</td>
+                        <td style="text-align: right;">{{ "{:.1f}%".format(margem) }}</td>
+                        <td>
+                            {% if margem > 30 %}
+                                <span class="badge badge-success">Alta Margem</span>
+                            {% elif qtd > 300 %}
+                                <span class="badge badge-warning">Alto Giro</span>
+                            {% else %}
+                                <span class="badge">Estável</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="kpi-grid">
+        <div class="card">
+            <h3>Insights de Produto</h3>
+            <ul style="padding-left: 20px; color: #475569; line-height: 1.8;">
+                <li><strong>Oportunidade:</strong> Lojas com alta venda de "Aparelhos" apresentam baixo mix de "Acessórios" (Cross-sell).</li>
+                <li><strong>Receita Recorrente:</strong> Planos e Internet representam {{ "{:.0f}%".format(mix[0][2] / (mix[0][2]+mix[1][2]) * 100) if mix|length > 1 else 0 }} da base de faturamento.</li>
+                <li><strong>Alerta:</strong> Categoria de "Chips" com margem abaixo do esperado no período.</li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}

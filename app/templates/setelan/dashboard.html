@@ -1,0 +1,105 @@
+{% extends "setelan/base.html" %}
+
+{% block content %}
+    <div style="margin-bottom: 32px;">
+        <h1 style="margin-bottom: 8px;">Dashboard Executivo</h1>
+        <p class="subtitle" style="margin: 0;">Análise de performance em tempo real das Lojas TIM - Grupo Sete Lan.</p>
+    </div>
+
+    <!-- Linha principal de KPIs -->
+    <div class="kpi-grid">
+        <div class="card kpi-card">
+            <span class="kpi-label">Faturamento Líquido</span>
+            <p class="kpi-value" style="color: var(--tim-blue)">R$ {{ "{:,.0f}".format(kpis.faturamento).replace(',', '.') }}</p>
+            <span class="badge badge-success">Vendas Concluídas</span>
+        </div>
+        <div class="card kpi-card">
+            <span class="kpi-label">Atingimento de Meta</span>
+            <p class="kpi-value">{{ "{:.1f}%".format(kpis.atingimento_meta) }}</p>
+            <div style="width: 100%; background: #e2e8f0; height: 8px; border-radius: 4px; overflow: hidden;">
+                <div style="width: {{ kpis.atingimento_meta if kpis.atingimento_meta <= 100 else 100 }}%; background: var(--tim-blue); height: 100%;"></div>
+            </div>
+        </div>
+        <div class="card kpi-card">
+            <span class="kpi-label">Margem Operacional</span>
+            <p class="kpi-value success">{{ "{:.1f}%".format(kpis.margem_perc) }}</p>
+            <span class="kpi-label" style="font-size: 0.7rem">Referência: 35%</span>
+        </div>
+        <div class="card kpi-card">
+            <span class="kpi-label">Ticket Médio</span>
+            <p class="kpi-value">R$ {{ "{:,.2f}".format(kpis.ticket_medio).replace(',', 'X').replace('.', ',').replace('X', '.') }}</p>
+            <span class="badge" style="background: #f1f5f9; color: #475569;">Por Venda</span>
+        </div>
+    </div>
+
+    <!-- Segunda linha: Rankings e Alertas -->
+    <div class="charts-grid">
+        <!-- Ranking de Lojas -->
+        <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                <h3 style="margin: 0; font-size: 1.25rem;">Top Lojas (Faturamento)</h3>
+                <a href="{{ url_for('setelan.desempenho_lojas') }}" class="badge badge-success" style="text-decoration: none;">Ver Ranking Completo &rarr;</a>
+            </div>
+            <div class="table-responsive">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Loja</th>
+                            <th style="text-align: right;">Total Líquido</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for nome, total, contagem in ranking[:5] %}
+                        <tr>
+                            <td><strong>{{ nome }}</strong></td>
+                            <td style="text-align: right; font-weight: 600;">R$ {{ "{:,.0f}".format(total).replace(',', '.') }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Alertas Gerenciais -->
+        <div class="card">
+            <h3 style="margin: 0 0 24px 0; font-size: 1.25rem;">Alertas Prioritários</h3>
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+                {% for alerta in alertas %}
+                <div style="padding: 16px; border-left: 4px solid {{ 'var(--danger)' if alerta.severidade == 'Alta' else 'var(--warning)' }}; background: #f8fafc; border-radius: 8px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                        <strong style="font-size: 0.75rem; text-transform: uppercase; color: {{ 'var(--danger)' if alerta.severidade == 'Alta' else 'var(--warning)' }}">{{ alerta.tipo_alerta }}</strong>
+                        <span style="font-size: 0.7rem; color: #94a3b8;">{{ alerta.severidade }}</span>
+                    </div>
+                    <p style="margin: 0; font-size: 0.9rem; color: var(--text-primary); font-weight: 500;">{{ alerta.descricao_alerta }}</p>
+                </div>
+                {% else %}
+                <div style="text-align: center; padding: 40px; color: #94a3b8;">
+                    <p>Nenhum alerta crítico identificado.</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Terceira linha: Saúde do Estoque -->
+    <div class="card">
+        <h3 style="margin-bottom: 24px; font-size: 1.25rem;">Indicadores de Saúde do Estoque</h3>
+        <div class="kpi-grid" style="margin-bottom: 0;">
+            <div style="padding: 20px; background: #fff1f2; border-radius: 12px; text-align: center;">
+                <span class="kpi-label" style="color: #be123c;">Produtos Críticos</span>
+                <p style="font-size: 2.5rem; font-weight: 800; color: #e11d48; margin: 8px 0;">{{ kpis.estoque_critico }}</p>
+                <a href="{{ url_for('setelan.estoque_reposicao') }}" style="font-size: 0.75rem; color: #be123c; font-weight: 600;">Ver Itens &rarr;</a>
+            </div>
+            <div style="padding: 20px; background: #fffbeb; border-radius: 12px; text-align: center;">
+                <span class="kpi-label" style="color: #b45309;">Estoque Parado</span>
+                <p style="font-size: 2.5rem; font-weight: 800; color: #d97706; margin: 8px 0;">{{ kpis.estoque_parado }}</p>
+                <span style="font-size: 0.75rem; color: #b45309; font-weight: 600;">SEM GIRO (45 DIAS)</span>
+            </div>
+            <div style="padding: 20px; background: #f0fdf4; border-radius: 12px; text-align: center;">
+                <span class="kpi-label" style="color: #15803d;">Giro Médio Diário</span>
+                <p style="font-size: 2.5rem; font-weight: 800; color: #16a34a; margin: 8px 0;">1.4</p>
+                <span style="font-size: 0.75rem; color: #15803d; font-weight: 600;">SAÍDAS/DIA</span>
+            </div>
+        </div>
+    </div>
+{% endblock %}

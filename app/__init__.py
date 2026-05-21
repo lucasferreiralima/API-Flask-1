@@ -16,10 +16,13 @@ def create_app(config_name=None):
     migrate.init_app(app, db)
 
     # Register blueprints
+    from app.setelan import setelan as setelan_blueprint
+    app.register_blueprint(setelan_blueprint, url_prefix='/')
+
     from app.api import api as api_blueprint
     app.register_blueprint(api_blueprint, url_prefix='/api')
 
     from app.web import web as web_blueprint
-    app.register_blueprint(web_blueprint)
+    app.register_blueprint(web_blueprint, url_prefix='/vettoreflow')
 
     return app

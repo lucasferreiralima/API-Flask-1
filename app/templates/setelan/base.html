@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}SeteLan Insight{% endblock %}</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- CSS Moderno para BI -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/setelan_style.css') }}">
+</head>
+<body>
+    <div class="app-grid">
+        <header class="app-header">
+            <a href="{{ url_for('setelan.index') }}" class="brand">SeteLan Insight</a>
+        </header>
+
+        <aside class="sidebar">
+            <nav>
+                <p class="nav-section-title">Gestão Estratégica</p>
+                <a href="{{ url_for('setelan.index') }}" class="nav-link">Dashboard Executivo</a>
+                <a href="{{ url_for('setelan.desempenho_lojas') }}" class="nav-link">Desempenho por Loja</a>
+                <a href="{{ url_for('setelan.mix_produtos') }}" class="nav-link">Mix de Vendas</a>
+                <a href="{{ url_for('setelan.metas_comerciais') }}" class="nav-link">Metas Comerciais</a>
+                <a href="{{ url_for('setelan.estoque_reposicao') }}" class="nav-link">Estoque e Reposição</a>
+                <a href="{{ url_for('setelan.resumo_executivo') }}" class="nav-link">Resumo Executivo</a>
+                <a href="{{ url_for('setelan.data_engine') }}" class="nav-link">Data Engine</a>
+                
+                <div class="ferramentas-extra">
+                    <p class="nav-section-title">Ferramentas</p>
+                    <a href="{{ url_for('setelan.baixar_base') }}" class="nav-link" style="color: var(--success); font-size: 0.85rem;">&darr; Exportar Excel</a>
+                    <a href="{{ url_for('setelan.setup_data') }}" class="nav-link" style="color: var(--danger); font-size: 0.85rem;">&#8634; Resetar Massa</a>
+                    <a href="/vettoreflow" class="nav-link" style="margin-top: 20px; border: 1px dashed #cbd5e1; font-size: 0.8rem;">Voltar ao VettoreFlow</a>
+                </div>
+            </nav>
+        </aside>
+        
+        <main class="content-area">
+            {% block content %}{% endblock %}
+        </main>
+
+        <footer class="app-footer">
+            <p>&copy; 2026 Grupo Sete Lan - Unidade de Inteligência de Dados (TIM RJ)</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

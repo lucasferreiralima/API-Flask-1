@@ -160,3 +160,8 @@ Thumbs.db
 
 # Docker
 .docker/
+
+# Database Migrations
+# Ignoramos apenas as versões específicas (scripts) para evitar conflitos PC/VPS.
+# A estrutura base da pasta migrations e o boot.sh devem ser mantidos.
+migrations/versions/*

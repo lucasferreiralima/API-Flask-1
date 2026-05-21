@@ -1,0 +1,41 @@
+{% extends "setelan/base.html" %}
+
+{% block title %}Desempenho por Loja - SeteLan Insight{% endblock %}
+
+{% block content %}
+    <h1>Performance por Unidade de Negócio</h1>
+    <p>Ranking e comparativo de faturamento e volume de vendas entre as lojas TIM.</p>
+    
+    <div class="card">
+        <div class="table-responsive" style="max-height: 700px;">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th class="sortable">Posição</th>
+                        <th class="sortable">Nome da Loja</th>
+                        <th class="sortable" style="text-align: right;">Faturamento Líquido</th>
+                        <th class="sortable" style="text-align: center;">Vendas (Qtd)</th>
+                        <th class="sortable" style="text-align: right;">Ticket Médio</th>
+                        <th>Performance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for nome, total, contagem in ranking %}
+                    <tr>
+                        <td><strong>{{ loop.index }}º</strong></td>
+                        <td>{{ nome }}</td>
+                        <td style="text-align: right;">R$ {{ "{:,.2f}".format(total) }}</td>
+                        <td style="text-align: center;">{{ contagem }}</td>
+                        <td style="text-align: right;">R$ {{ "{:,.2f}".format(total/contagem if contagem > 0 else 0) }}</td>
+                        <td>
+                            <div style="width: 100px; background: #eee; height: 10px; border-radius: 5px;">
+                                <div style="width: {{ (total / ranking[0][1] * 100) if ranking[0][1] > 0 else 0 }}%; background: var(--tim-blue); height: 10px; border-radius: 5px;"></div>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

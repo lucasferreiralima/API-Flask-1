@@ -1,0 +1,40 @@
+{% extends "setelan/base.html" %}
+
+{% block title %}Resumo Executivo - SeteLan Insight{% endblock %}
+
+{% block content %}
+    <h1>Resumo Executivo Gerencial</h1>
+    <p>Análise textual consolidada para suporte à tomada de decisão.</p>
+
+    <div class="card" style="border-left: 8px solid var(--tim-blue); padding: 40px;">
+        <h2 style="margin-top: 0;">Relatório de Performance - Maio/2026</h2>
+        <hr>
+        <div style="font-size: 1.2rem; line-height: 1.8; color: #333; margin: 30px 0;">
+            {{ texto }}
+        </div>
+        
+        <div class="metrics-grid" style="margin-top: 40px;">
+            <div style="padding: 15px; border: 1px solid #eee; border-radius: 8px;">
+                <strong>Faturamento Líquido</strong>
+                <p>R$ {{ "{:,.2f}".format(kpis.faturamento) }}</p>
+            </div>
+            <div style="padding: 15px; border: 1px solid #eee; border-radius: 8px;">
+                <strong>Meta Atingida</strong>
+                <p>{{ "{:.1f}%".format(kpis.atingimento_meta) }}</p>
+            </div>
+            <div style="padding: 15px; border: 1px solid #eee; border-radius: 8px;">
+                <strong>Margem de Lucro</strong>
+                <p>{{ "{:.1f}%".format(kpis.margem_perc) }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="card info-card">
+        <h3>Recomendações Estratégicas:</h3>
+        <ul>
+            <li>Intensificar campanhas de cross-sell de acessórios nas lojas de maior fluxo popular.</li>
+            <li>Revisar metas das unidades que operam abaixo de 70% há mais de duas semanas.</li>
+            <li>Agilizar a reposição de aparelhos iPhone e Samsung de alto valor para não perder faturamento no final do mês.</li>
+        </ul>
+    </div>
+{% endblock %}

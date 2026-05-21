@@ -1,0 +1,49 @@
+{% extends "setelan/base.html" %}
+
+{% block content %}
+    <div style="margin-bottom: 30px;">
+        <h1>Acompanhamento de Metas Comerciais</h1>
+        <p>Status de atingimento das unidades e projeção de faturamento.</p>
+    </div>
+
+    <div class="card">
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Unidade</th>
+                        <th style="text-align: right;">Meta (R$)</th>
+                        <th style="text-align: right;">Realizado (R$)</th>
+                        <th style="text-align: center;">Atingimento</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for nome, meta, realizado, perc, status in metas_data %}
+                    <tr>
+                        <td><strong>{{ nome }}</strong></td>
+                        <td style="text-align: right;">R$ {{ "{:,.0f}".format(meta).replace(',', '.') }}</td>
+                        <td style="text-align: right;">R$ {{ "{:,.0f}".format(realizado).replace(',', '.') }}</td>
+                        <td style="text-align: center;">
+                            <div style="font-weight: 800; color: {{ 'var(--success)' if perc >= 85 else 'var(--warning)' if perc >= 70 else 'var(--danger)' }}">
+                                {{ "{:.1f}%".format(perc) }}
+                            </div>
+                        </td>
+                        <td>
+                            {% if perc >= 100 %}
+                                <span class="badge badge-success">Meta Batida</span>
+                            {% elif perc >= 85 %}
+                                <span class="badge" style="background: #e2e8f0; color: #475569;">No Caminho</span>
+                            {% elif perc >= 70 %}
+                                <span class="badge badge-warning">Atenção</span>
+                            {% else %}
+                                <span class="badge badge-danger">Crítico</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
